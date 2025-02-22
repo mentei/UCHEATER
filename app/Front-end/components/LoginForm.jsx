@@ -19,7 +19,7 @@ const LoginForm = () => {
       <motion.button
         whileHover={{ scale: 1.1 }}
         className="mt-6 px-6 py-3 bg-blue-500 hover:bg-blue-600 rounded-lg shadow-md text-lg font-semibold transition"
-        onClick={() => router.push("/login")} // ✅ Yahan route set ho raha hai
+        onClick={() => router.push("/login")} 
       >
         Sign In
       </motion.button>
