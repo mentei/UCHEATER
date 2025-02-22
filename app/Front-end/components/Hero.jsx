@@ -1,8 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation"; // ✅ Next.js Router
-
+import { useRouter } from "next/navigation";
 const Hero = () => {
   const router = useRouter();
 
