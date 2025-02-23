@@ -39,3 +39,20 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 >>>>>>> 8795cfc (Initial commit)
+>>>>>> 
+>>>>>>THE PROJECT HOME PAGE
+>>>>>>![image](https://github.com/user-attachments/assets/a76170a2-20d7-41c6-a73c-f39e7568ed09)    HOME PAGE STILL  carry a 3 element
+>>>>>> Ai content detector // showing the graph 
+>>>>>>![image](https://github.com/user-attachments/assets/fd028b7e-cfef-4dc7-a478-6e141c3017ca)
+>>>>>>the final page which  help to track the user the content ia ai generated or huaman made.
+>>>>>>Help's to find the offensive words in assingment /file /.txt/.pdf/.word/etc
+>>>>>>![image](https://github.com/user-attachments/assets/90c7c889-dbae-443e-b1cf-5c34cb3f4bb2) ai detect & analyze the user keyboard behaviour// 
+>>>>>>the  feature of project made for educator , teachers ,student , univercity  Administration.. to track the student assingment & detect ai generated content real  time .
+>>>>>>The project guide to Run it locally
+>>>>>>Docs features allow user to make it avaliabke locally.
+>>>>>>![image](https://github.com/user-attachments/assets/2f186946-91c3-45ae-ae31-b63ecca3d957)
+>>>>>>
+
+
+
+
