@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { FaGithub, FaTwitter, FaLinkedin } from "react-icons/fa";
 
 const Footer = () => {
   const footerRef = useRef(null);
@@ -14,12 +15,6 @@ const Footer = () => {
         y: 0,
         duration: 1,
         ease: "power3.out",
-        scrollTrigger: {
-          trigger: footerRef.current,
-          start: "top 95%",
-          end: "top 85%",
-          scrub: 1,
-        },
       }
     );
   }, []);
@@ -35,25 +30,31 @@ const Footer = () => {
             © {new Date().getFullYear()} AI Detector | All Rights Reserved
           </p>
 
-          {/* ✅ Social Links */}
-          <div className="flex space-x-6 mt-4 md:mt-0">
+          {/* ✅ Social Icons */}
+          <div className="flex  h-full space-x-8 mt-2 p-8 md:mt-0">
             <a
-              href="#"
-              className="text-gray-400 hover:text-blue-500 transition duration-300"
+              href="https://github.com/mentei"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="neon-hover"
             >
-              Facebook
+              <FaGithub size={24} />
             </a>
             <a
-              href="#"
-              className="text-gray-400 hover:text-blue-500 transition duration-300"
+              href="https://x.com/PatleRahul239"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="neon-hover"
             >
-              Twitter
+              <FaTwitter size={24} />
             </a>
             <a
-              href="#"
-              className="text-gray-400 hover:text-blue-500 transition duration-300"
+              href="https://www.linkedin.com/in/rahul-patle-78b16a346/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="neon-hover"
             >
-              LinkedIn
+              <FaLinkedin size={24} />
             </a>
           </div>
         </div>
@@ -61,6 +62,20 @@ const Footer = () => {
 
       {/* ✅ Bottom Glow Effect */}
       <div className="absolute bottom-0 left-0 w-full h-1 bg-blue-500 shadow-lg animate-pulse"></div>
+
+      {/* ✅ Neon Hover Effect */}
+      <style>
+        {`
+          .neon-hover {
+            color: #ffffff;
+            transition: all 0.3s ease-in-out;
+          }
+          .neon-hover:hover {
+            color: #00e6e6;
+            text-shadow: 0 0 10px #00e6e6, 0 0 20px #00e6e6, 0 0 40px #00e6e6;
+          }
+        `}
+      </style>
     </footer>
   );
 };

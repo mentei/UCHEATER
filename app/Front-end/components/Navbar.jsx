@@ -54,7 +54,7 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Mobile Menu Icon */}
+        {/* Mobile Menu Icon added */}
         <div className="md:hidden flex items-center">
           <button onClick={toggleMenu} className="text-white focus:outline-none">
             {isOpen ? <X size={28} /> : <Menu size={28} />}

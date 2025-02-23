@@ -10,7 +10,7 @@ const AboutPage = () => {
   return (<>
     <Navbar/>
     <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center mt-20 p-10 font">
-      {/* Animated Heading */}
+     
       <motion.h1
         className="text-5xl font-bold mb-6"
         initial={{ opacity: 0, y: -50 }}
@@ -20,7 +20,7 @@ const AboutPage = () => {
         About Us
       </motion.h1>
 
-      {/* Animated Text */}
+    
       <motion.p
         className="text-lg text-center max-w-3xl mb-10"
         initial={{ opacity: 0 }}
@@ -31,16 +31,16 @@ const AboutPage = () => {
         Our mission is to deliver high-quality, scalable, and user-friendly solutions.
       </motion.p>
 
-      {/* Animated Image */}
+  
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        <Image src="/team.jpg" alt="Team" width={400} height={300} className="rounded-lg shadow-lg" />
+        <Image src="/team.png" alt="Team" width={400} height={300} className="rounded-lg shadow-lg" />
       </motion.div>
 
-      {/* Animated Elements */}
+
       <motion.div className="mt-10 flex space-x-6">
         <motion.div
           whileHover={{ scale: 1.1 }}

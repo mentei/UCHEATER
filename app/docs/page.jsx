@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Navbar from "@components/Navbar";
+import Footer from "@components/Footer";
 
 const docsSections = [
   { title: "Introduction", id: "intro" },
@@ -41,7 +42,7 @@ const DocsPage = () => {
         </ul>
       </div>
 
-      {/* Main Content */}
+
       <div className="ml-64 p-10 flex-1">
         <h1 className="text-3xl font-bold mb-6">UCHEATER  📌 Documentation</h1>
 
@@ -123,6 +124,8 @@ vercel deploy`}
         </section>
       </div>
     </div>
+  
+ 
     </> );
 };
 

@@ -10,43 +10,53 @@ const AssignmentEditor = ({ studentId }) => {
   const textAreaRef = useRef(null);
 
   useEffect(() => {
+    if (inputData.trim().length < 10) return; // कम टेक्स्ट पर API कॉल न करें
+
     const checkAIContent = async () => {
-      if (inputData.trim().length < 10) return;
-
-      setLoading(true);
-      const response = await fetch("/api/detect", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ inputData }),
-      });
-
-      const data = await response.json();
-      setLoading(false);
-
-      if (data.success && data.data.aiPercentage > 50) {
-        setWarning(true);
-        gsap.fromTo(
-          warningRef.current,
-          { scale: 0.8, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 0.5, ease: "elastic.out(1, 0.5)" }
-        );
-
-        gsap.to(textAreaRef.current, {
-          x: -5,
-          duration: 0.1,
-          repeat: 5,
-          yoyo: true,
-          ease: "power1.inOut",
-        });
-
-        // **Teacher Dashboard Update**
-        await fetch("/api/flag-student", {
+      try {
+        setLoading(true);
+        const response = await fetch("/api/detect", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ studentId, flagged: true }),
+          body: JSON.stringify({ inputData }),
         });
-      } else {
-        setWarning(false);
+
+        const data = await response.json();
+        console.log("AI Detection Response:", data); // Debugging के लिए लॉग
+
+        setLoading(false);
+
+        if (data.success && data.data?.aiPercentage > 50) {
+          setWarning(true);
+          if (warningRef.current) {
+            gsap.fromTo(
+              warningRef.current,
+              { scale: 0.8, opacity: 0 },
+              { scale: 1, opacity: 1, duration: 0.5, ease: "elastic.out(1, 0.5)" }
+            );
+          }
+
+          if (textAreaRef.current) {
+            gsap.to(textAreaRef.current, {
+              x: -5,
+              duration: 0.1,
+              repeat: 5,
+              yoyo: true,
+              ease: "power1.inOut",
+            });
+          }
+
+          // **Teacher Dashboard Update**
+          await fetch("/api/flag-student", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ studentId, flagged: true }),
+          });
+        } else {
+          setWarning(false);
+        }
+      } catch (error) {
+        console.error("AI Detection Error:", error);
       }
     };
 
@@ -66,9 +76,7 @@ const AssignmentEditor = ({ studentId }) => {
         placeholder="Write your assignment here..."
       />
 
-      {loading && (
-        <p className="text-blue-400 text-center mt-2 animate-pulse">🔍 Checking for AI content...</p>
-      )}
+      {loading && <p className="text-blue-400 text-center mt-2 animate-pulse">🔍 Checking for AI content...</p>}
 
       {warning && (
         <p

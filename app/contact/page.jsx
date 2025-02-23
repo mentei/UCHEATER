@@ -30,9 +30,9 @@ const ContactPage = () => {
         Contact Us
       </motion.h1>
       <div className="flex space-x-6 mt-6">
-        <ContactCard title="Email" description="support@example.com" />
-        <ContactCard title="Phone" description="+91 98765 43210" />
-        <ContactCard title="Location" description="Mumbai, India" />
+        <ContactCard title="Email" description="patler044@gmail.com" />
+        <ContactCard title="Phone" description="+91 9098842899" />
+        <ContactCard title="Location" description="   BALAGHAT ,MADHYA PARDESH, India" />
       </div>
       <Footer />
     </div>

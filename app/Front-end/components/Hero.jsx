@@ -25,7 +25,7 @@ export default function Hero() {
 
   return (
     <div className="relative w-full h-screen bg-black flex items-center justify-center overflow-hidden">
-      {/* 3D AI Model */}
+
       <Canvas className="absolute top-0 left-0 w-full h-full">
         <ambientLight intensity={1} />
         <directionalLight position={[3, 3, 3]} />
@@ -33,7 +33,7 @@ export default function Hero() {
         <AIModel />
       </Canvas>
 
-      {/* Text Content */}
+      
       <div className="relative z-10 text-center text-white px-6 md:px-10">
         <h1
           ref={titleRef}
