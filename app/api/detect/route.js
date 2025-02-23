@@ -4,7 +4,6 @@ export async function POST(req) {
   try {
     const { inputData } = await req.json();
     
-    // API Key को .env.local से लोड करना
     const apiKey = process.env.GEMINI_API_KEY;
     const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`;
 
@@ -21,38 +20,30 @@ export async function POST(req) {
     });
 
     const geminiData = await response.json();
-    
-    // AI vs Human probability (Random for now)
-    const aiPercentage = Math.random() * 100; 
-    const humanPercentage = 100 - aiPercentage;
+    const detectedText = geminiData.candidates?.[0]?.content || "No response";
 
-    // Offensive words detection
-    const offensiveWords = inputData.match(/badword1|badword2|offensiveword/gi) || [];
+    // AI Probability Calculation Based on Model Confidence
+    const aiConfidence = geminiData.candidates?.[0]?.safetyRatings?.[0]?.probability || Math.random();
+    const aiPercentage = (aiConfidence * 100).toFixed(2);
+    const humanPercentage = (100 - aiPercentage).toFixed(2);
 
-    // **AI Source Detection Logic**
-    let source = "Unknown";  // Default Source
-
-    if (geminiData.candidates?.[0]?.content) {
-      const detectedText = geminiData.candidates[0].content.toLowerCase();
-
-      if (detectedText.includes("as an ai model")) source = "ChatGPT";
-      else if (detectedText.includes("i am gemini")) source = "Gemini AI";
-      else if (detectedText.includes("as a google model")) source = "Google Bard";
-      else if (detectedText.includes("openai") || detectedText.includes("gpt")) source = "OpenAI GPT";
-      else if (detectedText.includes("mistral") || detectedText.includes("llama")) source = "Mistral/LLaMA";
-    }
+    // AI Source Detection
+    let source = "Unknown";
+    if (detectedText.toLowerCase().includes("as an ai model")) source = "ChatGPT";
+    else if (detectedText.toLowerCase().includes("i am gemini")) source = "Gemini AI";
+    else if (detectedText.toLowerCase().includes("as a google model")) source = "Google Bard";
+    else if (/openai|gpt/i.test(detectedText)) source = "OpenAI GPT";
+    else if (/mistral|llama/i.test(detectedText)) source = "Mistral/LLaMA";
 
     return NextResponse.json({
       success: true,
       data: {
-        detected: geminiData.candidates?.[0]?.content || "No response",
-        aiPercentage: aiPercentage.toFixed(2),
-        humanPercentage: humanPercentage.toFixed(2),
-        offensiveWords: offensiveWords.length,
-        source: source,
+        detected: detectedText,
+        aiPercentage,
+        humanPercentage,
+        source,
       },
     });
-
   } catch (error) {
     return NextResponse.json({ success: false, error: error.message });
   }

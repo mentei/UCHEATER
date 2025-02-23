@@ -1,40 +1,43 @@
 "use client";
 import { useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { FaFolderOpen } from "react-icons/fa"; // Folder icon import
 
 const ContentForm = () => {
   const [inputData, setInputData] = useState("");
+  const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setResult(null);
-
-    const response = await fetch("/api/detect", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ inputData }),
-    });
-
-    const data = await response.json();
-    setResult(data);
-  };
-  const handleFileUpload = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
+    setError(null);
 
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("inputData", inputData);
+    if (file) formData.append("file", file);
 
-    const response = await fetch("/api/upload", {
+    try {
+      const response = await fetch("/api/detect", {
         method: "POST",
         body: formData,
-    });
+      });
 
-    const result = await response.json();
-    console.log(result);
-};
+      const data = await response.json();
+      console.log("API Response:", data);
 
+      if (!data.success) {
+        setError("Error in detection!");
+        return;
+      }
+
+      setResult(data);
+    } catch (err) {
+      console.error("Fetch error:", err);
+      setError("Something went wrong! Try again.");
+    }
+  };
 
   return (
     <div className="max-w-xl mx-auto text-center p-6 bg-gray-900 text-white rounded-lg shadow-lg">
@@ -47,18 +50,33 @@ const ContentForm = () => {
           onChange={(e) => setInputData(e.target.value)}
           className="w-full px-4 py-2 border text-black rounded"
         />
-        <input className="bg-black text-white border-2 border-green-400 p-2 text-lg rounded-lg shadow-neon focus:outline-none focus:ring-2 focus:ring-green-400 hover:shadow-neon-hover" type="file" onChange={handleFileUpload} />
-      
 
-        <button type="submit" className="bg-blue-500 m-4 hover:bg-blue-700 text-white px-6 py-2 rounded transition">
+        {/* File Upload Section */}
+        <label className="flex items-center justify-center gap-2 cursor-pointer bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600">
+          <FaFolderOpen size={20} /> {/* Folder icon */}
+          <span>{file ? file.name : "Upload File"}</span>
+          <input
+            type="file"
+            onChange={(e) => setFile(e.target.files[0])}
+            className="hidden"
+          />
+        </label>
+
+        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white px-6 py-2 rounded transition">
           Detect
         </button>
       </form>
 
-      {result && (
+      {error && (
+        <p className="text-red-500 mt-4">{error}</p>
+      )}
+
+      {result && result.data && (
         <div className="mt-6 p-4 bg-gray-800 rounded-lg">
           <h3 className="text-lg font-semibold text-green-400">Result:</h3>
-          <p className="text-gray-300">{result.success ? `Detected: ${result.data.detected}` : "Error in detection!"}</p>
+          <p className="text-gray-300">
+            Detected: {result.data.detected || "Unknown"}
+          </p>
 
           {/* Pie Chart */}
           <div className="mt-6">
@@ -67,9 +85,9 @@ const ContentForm = () => {
               <PieChart>
                 <Pie
                   data={[
-                    { name: "AI Generated", value: parseFloat(result.data.aiPercentage) },
-                    { name: "Human Written", value: parseFloat(result.data.humanPercentage) },
-                    { name: "Offensive Words", value: result.data.offensiveWords },
+                    { name: "AI Generated", value: parseFloat(result.data.aiPercentage || 0) },
+                    { name: "Human Written", value: parseFloat(result.data.humanPercentage || 0) },
+                    { name: "Offensive Words", value: result.data.offensiveWords || 0 },
                   ]}
                   cx="50%"
                   cy="50%"
@@ -88,21 +106,11 @@ const ContentForm = () => {
             </ResponsiveContainer>
           </div>
 
-          {result && (
-  <div className="mt-6 p-4 bg-gray-800 rounded-lg">
-    <h3 className="text-lg font-semibold text-green-400">Result:</h3>
-    <p className="text-gray-300">{result.success ? `Detected: ${result.data.detected}` : "Error in detection!"}</p>
-
-    {/* AI Source Detection */}
-    <div className="mt-4 p-2 bg-gray-700 rounded">
-      <h4 className="text-sm font-semibold text-red-400">Source Detected:</h4>
-      <p className="text-gray-300">
-        {result.data.source !== "Unknown" ? result.data.source : "AI source could not be identified."}
-      </p>
-    </div>
-  </div>
-)}
-
+          {/* AI Source Detection */}
+          <div className="mt-4 p-2 bg-gray-700 rounded">
+            <h4 className="text-sm font-semibold text-red-400">Source Detected:</h4>
+            <p className="text-gray-300">{result.data.source || "Unknown"}</p>
+          </div>
         </div>
       )}
     </div>

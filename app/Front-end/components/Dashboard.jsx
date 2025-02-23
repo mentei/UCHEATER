@@ -1,6 +1,7 @@
 "use client";
 import { useSession, signOut } from "next-auth/react";
-import ContentForm from "./ContentForm";
+import ContentForm from "./detector/ContentForm";
+
 
 const Dashboard = () => {
   const { data: session } = useSession();

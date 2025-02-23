@@ -4,12 +4,9 @@ import Hero from "./Hero";
 import Features from "./Features";
 import Footer from "./Footer";
 
-
-import ContentForm from "@/app/Front-end/components/detector/ContentForm";
-// import Dashboard from "@/app/Front-end/components/detector/Dashboard";
-
-
-
+import ContentForm from "./detector/ContentForm";
+import AssignmentEditor from "@components/Assingment/AssingmentEditor"; 
+import Dashboard from "@components/Dashboard";
 
 const HomePage = () => {
   return (
@@ -17,11 +14,10 @@ const HomePage = () => {
       <Navbar />
       <Hero />
       <Features />
-     {/* <Dashboard/> */}
-      <ContentForm/>
+      <Dashboard />
+      <ContentForm />
+      <AssignmentEditor />
       <Footer />
-    
-
     </div>
   );
 };
