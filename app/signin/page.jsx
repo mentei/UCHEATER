@@ -1,7 +1,7 @@
 "use client";
 import { signIn, signOut, useSession } from "next-auth/react";
 
-const LoginButton = () => {
+const signin = () => {
   const { data: session } = useSession();
 
   return (
@@ -24,4 +24,4 @@ const LoginButton = () => {
   );
 };
 
-export default LoginButton;
+export default signin;

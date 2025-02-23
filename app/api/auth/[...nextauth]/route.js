@@ -1,11 +1,10 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
-import { connectToDatabase } from "@/lib/mongodb";
-// import User from "./models/User";
-import User from "@/models/User"; 
+import CredentialsProvider from "next-auth/providers/credentials";
 
-
+import { connectToDatabase } from "@/app/lib/mongodb";
+import User from "@/models/User";
 
 export const authOptions = {
   providers: [
@@ -19,28 +18,13 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user }) {
-      await connectToDatabase();
-      const existingUser = await User.findOne({ email: user.email });
-
-      if (!existingUser) {
-        await User.create({
-          name: user.name,
-          email: user.email,
-          image: user.image,
-        });
-      }
-
-      return true;
-    },
-    async session({ session }) {
-      await connectToDatabase();
-      const dbUser = await User.findOne({ email: session.user.email });
-
-      if (dbUser) {
-        session.user.id = dbUser._id;
-      }
+    async session({ session, token }) {
+      session.user.id = token.sub;
       return session;
+    },
+    async jwt({ token, user }) {
+      if (user) token.sub = user.id;
+      return token;
     },
   },
   session: {

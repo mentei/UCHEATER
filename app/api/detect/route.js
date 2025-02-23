@@ -2,49 +2,27 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const { inputData } = await req.json();
-    
-    const apiKey = process.env.GEMINI_API_KEY;
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`;
+    const formData = await req.formData();
+    const inputData = formData.get("inputData");
+    const file = formData.get("file");
 
-    const response = await fetch(geminiUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: inputData }] }],
-        safetySettings: [
-          { category: "HATE_SPEECH", threshold: "BLOCK_ONLY_HIGH" },
-          { category: "HARASSMENT", threshold: "BLOCK_ONLY_HIGH" },
-        ],
-      }),
-    });
-
-    const geminiData = await response.json();
-    const detectedText = geminiData.candidates?.[0]?.content || "No response";
-
-    // AI Probability Calculation Based on Model Confidence
-    const aiConfidence = geminiData.candidates?.[0]?.safetyRatings?.[0]?.probability || Math.random();
-    const aiPercentage = (aiConfidence * 100).toFixed(2);
-    const humanPercentage = (100 - aiPercentage).toFixed(2);
-
-    // AI Source Detection
-    let source = "Unknown";
-    if (detectedText.toLowerCase().includes("as an ai model")) source = "ChatGPT";
-    else if (detectedText.toLowerCase().includes("i am gemini")) source = "Gemini AI";
-    else if (detectedText.toLowerCase().includes("as a google model")) source = "Google Bard";
-    else if (/openai|gpt/i.test(detectedText)) source = "OpenAI GPT";
-    else if (/mistral|llama/i.test(detectedText)) source = "Mistral/LLaMA";
+    // Dummy AI detection logic (इसको अपनी असली AI API से जोड़ सकते हो)
+    const aiPercentage = Math.random() * 100;
+    const humanPercentage = 100 - aiPercentage;
+    const offensiveWords = Math.floor(Math.random() * 10);
+    const source = aiPercentage > 50 ? "AI Generated" : "Human Written";
 
     return NextResponse.json({
       success: true,
       data: {
-        detected: detectedText,
-        aiPercentage,
-        humanPercentage,
+        detected: source,
+        aiPercentage: aiPercentage.toFixed(2),
+        humanPercentage: humanPercentage.toFixed(2),
+        offensiveWords,
         source,
       },
     });
   } catch (error) {
-    return NextResponse.json({ success: false, error: error.message });
+    return NextResponse.json({ success: false, error: "API Error!" }, { status: 500 });
   }
 }

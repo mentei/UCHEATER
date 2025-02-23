@@ -1,50 +1,61 @@
 "use client";
-import React from "react";
-import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { useEffect, useRef } from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, useGLTF } from "@react-three/drei";
+import { gsap } from "gsap";
+import { Orbitron } from "@next/font/google";
 
-const Hero = () => {
-  const router = useRouter();
+const orbitron = Orbitron({ subsets: ["latin"], weight: "700" });
+
+function AIModel() {
+  const { scene } = useGLTF("/ai_brain_model.glb"); // AI Brain Model
+  return <primitive object={scene} scale={1.2} position={[0, -0.5, 0]} />;
+}
+
+export default function Hero() {
+  const titleRef = useRef(null);
+
+  useEffect(() => {
+    gsap.fromTo(
+      titleRef.current,
+      { opacity: 0, y: -50 },
+      { opacity: 1, y: 0, duration: 1.5, ease: "power3.out" }
+    );
+  }, []);
 
   return (
-    <section
-      className="min-h-screen flex flex-col items-center justify-center text-center px-6 bg-cover bg-center relative"
-     
-    >
-      {/* 🔥 Dark Overlay for better text visibility */}
-      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+    <div className="relative w-full h-screen bg-black flex items-center justify-center overflow-hidden">
+      {/* 3D AI Model */}
+      <Canvas className="absolute top-0 left-0 w-full h-full">
+        <ambientLight intensity={1} />
+        <directionalLight position={[3, 3, 3]} />
+        <OrbitControls autoRotate enableZoom={false} />
+        <AIModel />
+      </Canvas>
 
-      {/* Content inside Hero section */}
-      <div className="relative z-10">
-        <motion.h1
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-5xl font-bold text-blue-400"
+      {/* Text Content */}
+      <div className="relative z-10 text-center text-white px-6 md:px-10">
+        <h1
+          ref={titleRef}
+          className={`text-4xl md:text-6xl font-bold neon-text ${orbitron.className}`}
         >
-          Detect AI-Generated Content with Accuracy
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="mt-4 text-lg text-gray-200 max-w-2xl"
-        >
-          Our AI detection system helps educators and researchers verify content authenticity.
-        </motion.p>
-
-        {/* ✅ Sign In page pe le jane wala button */}
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          className="mt-6 px-6 py-3 bg-blue-500 hover:bg-blue-600 rounded-lg shadow-md text-lg font-semibold transition"
-          onClick={() => router.push("/signin")}
-        >
+          AI-Powered Content Detection
+        </h1>
+        <p className="mt-2 text-base md:text-lg text-gray-300 max-w-lg mx-auto">
+          Our AI system ensures content authenticity with advanced machine learning.
+        </p>
+        <button className="mt-5 px-5 md:px-6 py-2 md:py-3 bg-blue-600 hover:bg-blue-800 text-white font-bold rounded-lg transition-all shadow-lg">
           Try Now
-        </motion.button>
+        </button>
       </div>
-    </section>
-  );
-};
 
-export default Hero;
+      <style>
+        {`
+          .neon-text {
+            text-shadow: 0 0 5px #00e6e6, 0 0 10px #00e6e6, 0 0 20px #00e6e6;
+          }
+        `}
+      </style>
+    </div>
+  );
+}
