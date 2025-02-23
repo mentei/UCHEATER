@@ -52,7 +52,10 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 >>>>>>Docs features allow user to make it avaliabke locally.
 >>>>>>![image](https://github.com/user-attachments/assets/2f186946-91c3-45ae-ae31-b63ecca3d957)
 >>>>>>
+slide link of project +++
+https://docs.google.com/presentation/d/1TQuWvbZLAcu9foICZdyzYa2WQqGtyNNfkntjMoj5CR8/edit?usp=sharing
+the video of project working../
 
 
-
+https://www.youtube.com/watch?v=2FSvJeX0JUY
 
