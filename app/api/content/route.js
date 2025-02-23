@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import Content from "@/models/Content";
+// import Content from "@/models/Content";
 import connectToDatabase from "@/lib/mongodb";
 import { detectContent } from "@/utils/detector";
 
