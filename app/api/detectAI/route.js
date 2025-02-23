@@ -1,5 +1,4 @@
-// Teacher Dashboard - Highlight students using AI-generated content
-import { useEffect, useState } from "react";
+
 
 export default function TeacherDashboard() {
   const [flaggedStudents, setFlaggedStudents] = useState([]);
