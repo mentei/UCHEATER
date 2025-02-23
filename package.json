@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.22.0",
+    "@next/font": "^14.2.15",
     "@react-three/drei": "^10.0.1",
     "@react-three/fiber": "^9.0.4",
     "dotenv": "^16.4.7",
